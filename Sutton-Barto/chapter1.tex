@@ -1,0 +1,24 @@
+\section{Introduction to Reinforcement Learning}
+
+
+Computational approach to \textbf{goal-directed} learning by an agent from interactions with an environment.
+\begin{itemize}
+    \item Trial-and-error search
+    \item Delayed reward
+    \item Exploration vs exploitation
+    \item Model-based vs model-free
+\end{itemize}
+
+Broadly, maximize reward signa  l, despite uncertainty about the environment -> Optimization problem.
+
+\subsection{Elements of RL}
+A Markov Decision Process (MDP) involving:
+\begin{itemize}
+    \item Policy : Mapping from states to actions
+    \item Reward Signal : Scalar signal that indicates the \textbf{desirability} of the state i.e. immediate value
+    \item Value Function : Expected cumulative reward from a state i.e. far-sighted judgment of value of starting from a particular state.
+    \item Model (of the environment): Predicts the next state and reward given the current state and action; used for planning.
+\end{itemize}
+
+Value function is computed without \textbf{explicit search} over possible sequences of future states and actions. 
+Focus is on highest value, and not on highest reward, even though value is computed from rewards.
