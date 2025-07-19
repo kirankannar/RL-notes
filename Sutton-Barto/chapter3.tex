@@ -95,6 +95,9 @@ The \textbf{action-value function} $q_\pi(s, a)$ is the expected return starting
     \end{split}
  \end{equation}
 
+ The value of state $s$ under policy $\pi$ is the expected return when starting from state $s$, 
+ taking action $a \sim \pi(a|s)$, and then following $\pi$ forever.
+
  \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{img/backup_diagram2.png}
@@ -147,3 +150,91 @@ The \textbf{Bellman equation} for the action-value function $q_\pi(s, a)$ is giv
         \label{eq:mdp-bellman-equation-5}
     \end{split}
  \end{equation}
+
+
+ \subsection{Optimal Policy and Value Functions}
+
+ There exists an optimal policy $\pi_*$ that maximizes the value function for all states:\\
+ $\pi_* \geq \pi$ for all policies $\pi$ iff $v_{\pi_{*}}(s) \geq v_\pi(s)$ for all states $s$
+ and all policies $\pi$.
+
+ The optimal value function $v_*$ is the maximum value function over all policies:
+
+ \begin{equation}
+    \begin{split}
+        v_*(s) = \max_{\pi} v_\pi(s) \\
+        q_*(s, a) = \max_{\pi} q_\pi(s, a) \\
+        q_*(s, a) = \mathbb{E}[R_{t+1} + \gamma v_*(S_{t+1}) | S_t = s, A_t = a] \\
+        \label{eq:mdp-optimal-value-function}
+    \end{split}
+ \end{equation}
+
+ \begin{equation}
+    \begin{split}
+        v_*(s) = \max_{a} q_*(s, a) \\
+        \label{eq:mdp-optimal-value-function_reduced}
+    \end{split}
+ \end{equation}
+
+Derivation below:
+
+The optimal policy is deterministic. In a finite MDP, there always exists a deterministic
+optimal policy. The best possible value you can get from state $s$
+is by taking the best single action, then always acting optimally. i.e.,\\
+the  \textit{value} of state $s$ under the optimal policy is the maximum of the \textit{expected return} for the best
+action from state $s$.
+
+\begin{equation}
+    \begin{split}
+        \pi_*(a|s) = \begin{cases}
+            1 & \text{if,} \quad a = \arg \max_{a'} q_*(s, a') \\
+            0 & \text{otherwise}
+        \end{cases}
+    \end{split}
+\end{equation}
+
+ \begin{equation}
+    \begin{split}
+        v_*(s) = \sum_{a} \pi_*(a|s) q_{\pi_*}(s, a) \\
+        \implies v_*(s) = \max_{a} q_*(s, a) \\
+        \label{eq:mdp-optimal-value-function-2}
+    \end{split}
+ \end{equation}
+
+You're picking the greedy action with respect to $q_*(s, a)$, and then continuing optimally
+ -  which is exactly what an optimal policy does.\\\\
+If the value of a state is computed as an expectation over all actions, then why not use a
+stochastic policy?
+
+Suppose you have two actions, $A$ and $B$, and the value of state $s$ is computed as
+ an expectation over all actions:
+
+ Action $A$ gives you $10$, and action $B$ gives you $5$.
+
+ If you randomly pick between them (say, 50–50), your expected reward is:
+
+ \begin{equation}
+    \begin{split}
+        \mathbb{E}[R_{t+1} | S_t = s] = 0.5 \cdot 10 + 0.5 \cdot 5 = 7.5 \\
+    \end{split}
+ \end{equation}
+
+ But if you're allowed to just always pick the better one, why wouldn't you? It always
+ gives you the best possible value. It is in the best interest to be greedy.
+
+ During policy evaluation, you're computing the value of the theoretical average:
+ what happens in expectation when the agent randomly samples an action from 
+ $\pi(a|s)$.\\
+
+
+\textbf{Summary:}
+\begin{equation}
+    \begin{split}
+        v_*(s) = \max_{a} q_*(s, a) \\
+        v_*(s) = \max_{a} \sum_{s',r} p(s',r|s, a) [r + \gamma v_*(s')] \\
+        q_*(s, a) = \sum_{s',r} p(s',r|s, a) [r + \gamma \max_{a'} q_*(s', a')] \\
+        \label{eq:mdp-optimal-value-function-3}
+    \end{split}
+ \end{equation}
+
+
